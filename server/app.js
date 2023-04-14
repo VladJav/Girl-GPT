@@ -1,4 +1,4 @@
-require('dotenv').config({path: `${__dirname}/../.env`});
+require('dotenv').config({ path: `${__dirname}/../.env` });
 require('express-async-errors');
 
 const express = require('express');
@@ -8,7 +8,6 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 const notFoundMiddleware = require('./middleware/not-found');
 
 const PORT = process.env.PORT || 8000;
-
 
 app.get('/',(req, res) => {
     res.send('Girl GPT');
