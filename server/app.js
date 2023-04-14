@@ -4,6 +4,8 @@ require('express-async-errors');
 const express = require('express');
 const app = express();
 
+const connectDb = require('./db/connect');
+
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const notFoundMiddleware = require('./middleware/not-found');
 
@@ -16,6 +18,11 @@ app.get('/',(req, res) => {
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
 
-app.listen(PORT,() => {
-    console.log(`Server is listening on port ${PORT}...`);
-});
+const start = async ()  => {
+    await connectDb(process.env.MONGO_URI);
+    app.listen(PORT,() => {
+        console.log(`Server is listening on port ${PORT}...`);
+    });
+};
+
+start();
