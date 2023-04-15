@@ -21,10 +21,8 @@ app.use('/api/v1/auth', authRouter);
 app.get('/',(req, res) => {
     res.send('Girl GPT');
 });
-
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
-
 const start = async ()  => {
     await connectDb(process.env.MONGO_URI);
     app.listen(PORT,() => {

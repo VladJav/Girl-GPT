@@ -4,6 +4,6 @@ module.exports = {
     secure: false, // true for 465, false for other ports
     auth: {
         user: 'apikey',
-        pass: process.env.SENDGRID_API_KEY,
+        pass: `${process.env.SENDGRID_API_KEY}`,
     },
 };

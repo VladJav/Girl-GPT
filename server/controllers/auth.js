@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
 const User = require('../models/User');
-const { BadRequestError } = require('../errors');
+const { BadRequestError, UnauthenticatedError } = require('../errors');
+const { sendMail } = require('../utils');
 
 const register = async (req, res) => {
     const { email, name, password } = req.body;
@@ -12,29 +12,32 @@ const register = async (req, res) => {
     }
 
     const activationCode = jwt.sign({ email: email }, process.env.JWT_SECRET);
+    const CLIENT_URL = 'http://localhost:8000';
+    await User.create({ name, email, password, activationCode });
 
-    const user = await User.create({ name, email, password, activationCode });
-
-    const transporter = nodemailer.createTransport({
-        host: 'smtp.sendgrid.net',
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-            user: 'apikey',
-            pass: process.env.SENDGRID_API_KEY,
-        },
-    });
-    const  info = await transporter.sendMail({
-        from: '"Girl GPT👻" <hrom012k@gmail.com>', // sender address
-        to: 'hrombp001@outlook.com', // list of receivers
-        subject: 'Hello ✔', // Subject line
-        text: 'Hello world?', // plain text body
-        html: '<b>Hello world?</b>', // html body
-    });
-    res.send('Register');
+    await sendMail(email, 'Account Verification: GIRL GPT Auth ✔', `
+                <h2>Please click on below link to activate your account</h2>
+                <p>${CLIENT_URL}/api/v1/auth/activate/${activationCode}</p>
+                <p><b>NOTE: </b> The above activation link expires in 30 minutes.</p>
+                `);
+    res.json({ msg: 'Success! Check your email to verify account' });
 };
-const activateUser = (req, res) => {
-    res.send('Verify email');
+const activateUser = async (req, res) => {
+    const { token } = req.params;
+
+    const { email } = jwt.verify(token, process.env.JWT_SECRET);
+    
+    const user = await User.findOne({ email });
+    
+    if (!user) {
+        throw new UnauthenticatedError('Bad token');
+    }
+
+    user.isActivated = true;
+    user.activationCode = '';
+
+    await user.save();
+    res.json({ user });
 };
 const login = (req, res) => {
     res.send('Login');
