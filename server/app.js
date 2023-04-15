@@ -2,15 +2,22 @@ require('dotenv').config({ path: `${__dirname}/../.env` });
 require('express-async-errors');
 
 const express = require('express');
-const app = express();
+const cookieParser = require('cookie-parser');
 
 const connectDb = require('./db/connect');
+
+const authRouter = require('./routes/auth');
 
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const notFoundMiddleware = require('./middleware/not-found');
 
+const app = express();
 const PORT = process.env.PORT || 8000;
 
+app.use(cookieParser());
+app.use(express.json());
+
+app.use('/api/v1/auth', authRouter);
 app.get('/',(req, res) => {
     res.send('Girl GPT');
 });

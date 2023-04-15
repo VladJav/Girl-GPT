@@ -22,6 +22,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Please provide user password'],
     },
+    activationCode:{
+        type: String,
+        required: true,
+    },
+    isActivated:{
+        type: Boolean,
+        default: false,
+    },
     role:{
         type: String,
         enum: ['user', 'admin'],
