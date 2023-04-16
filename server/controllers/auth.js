@@ -1,7 +1,8 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 const { BadRequestError, UnauthenticatedError } = require('../errors');
-const { sendMail } = require('../utils');
+const { sendMail, generateTokens, saveToken } = require('../utils');
 
 const register = async (req, res) => {
     const { email, name, password } = req.body;
@@ -37,10 +38,39 @@ const activateUser = async (req, res) => {
     user.activationCode = '';
 
     await user.save();
-    res.json({ user });
+    res.json({ msg: 'Email verified' });
 };
-const login = (req, res) => {
-    res.send('Login');
+const login = async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        throw new BadRequestError('Please provide email and password');
+    }
+    
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        throw new UnauthenticatedError('Please provide correct credentials');
+    }
+
+    const isPasswordCorrect = await user.comparePasswords(password);
+    console.log(password, user.password);
+    if (!isPasswordCorrect) {
+        throw new UnauthenticatedError('Please provide correct credentials');
+    }
+
+    if (user.isActivated === false) {
+        throw new UnauthenticatedError('Please verify your email');
+    }
+
+    const { refreshToken, accessToken } = generateTokens({ user: user._id, role: user.role });
+    await saveToken(user._id, refreshToken, req.ip);
+    const oneDay = 1000 * 60 * 60 * 24;
+    res.cookie('refreshToken', refreshToken, {
+        expires: new Date(Date.now() + (oneDay * 30)),
+        httpOnly: true,
+        signed: true,
+    });
+    res.json({ accessToken });
 };
 
 const logout = (req, res) => {

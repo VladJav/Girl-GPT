@@ -14,7 +14,7 @@ const notFoundMiddleware = require('./middleware/not-found');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.use(cookieParser());
+app.use(cookieParser(process.env.JWT_REFRESH_SECRET));
 app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
