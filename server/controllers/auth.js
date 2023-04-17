@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { StatusCodes } = require('http-status-codes');
 const User = require('../models/User');
 const Token = require('../models/Token');
 const { BadRequestError, UnauthenticatedError } = require('../errors');
@@ -72,8 +73,20 @@ const login = async (req, res) => {
     res.json({ accessToken });
 };
 
-const logout = (req, res) => {
-    res.send('Logout');
+const logout = async (req, res) => {
+    const { userId } = req.user;
+    const token = await Token.findOneAndDelete({ user: userId });
+    if (!token) {
+        throw new UnauthenticatedError('You do not have valid refresh token');
+    }
+
+    res.cookie('refreshToken', '', {
+        expires: new Date(Date.now() + 1),
+        httpOnly: true,
+    });
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
+
 };
 
 const refreshToken = async (req, res) => {
