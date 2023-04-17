@@ -9,7 +9,7 @@ const tokenSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    ip:{
+    userAgent:{
         type: String,
         required: true,
     },

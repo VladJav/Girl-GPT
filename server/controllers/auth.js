@@ -53,7 +53,6 @@ const login = async (req, res) => {
     }
 
     const isPasswordCorrect = await user.comparePasswords(password);
-    console.log(password, user.password);
     if (!isPasswordCorrect) {
         throw new UnauthenticatedError('Please provide correct credentials');
     }
@@ -61,9 +60,8 @@ const login = async (req, res) => {
     if (user.isActivated === false) {
         throw new UnauthenticatedError('Please verify your email');
     }
-
     const { refreshToken, accessToken } = generateTokens({ user: user._id, role: user.role });
-    await saveToken(user._id, refreshToken, req.ip);
+    await saveToken(user._id, refreshToken, req.headers['user-agent']);
     const oneDay = 1000 * 60 * 60 * 24;
     res.cookie('refreshToken', refreshToken, {
         expires: new Date(Date.now() + (oneDay * 30)),
@@ -77,6 +75,9 @@ const logout = (req, res) => {
     res.send('Logout');
 };
 
+const refreshToken = (req, res) => {
+
+};
 module.exports = {
     register,
     activateUser,
