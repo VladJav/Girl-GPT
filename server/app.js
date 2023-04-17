@@ -8,6 +8,7 @@ const connectDb = require('./db/connect');
 
 const authRouter = require('./routes/auth');
 
+const { authenticateUser } = require('./middleware/authentication');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 const notFoundMiddleware = require('./middleware/not-found');
 
@@ -18,7 +19,7 @@ app.use(cookieParser(process.env.JWT_REFRESH_SECRET));
 app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
-app.get('/',(req, res) => {
+app.get('/', authenticateUser, (req, res) => {
     res.send('Girl GPT');
 });
 app.use(notFoundMiddleware);
