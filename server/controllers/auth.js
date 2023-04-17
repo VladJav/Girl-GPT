@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
+const Token = require('../models/Token');
 const { BadRequestError, UnauthenticatedError } = require('../errors');
 const { sendMail, generateTokens, saveToken } = require('../utils');
+const { validateRefreshToken } = require('../utils/jwt');
 
 const register = async (req, res) => {
     const { email, name, password } = req.body;
@@ -75,12 +76,35 @@ const logout = (req, res) => {
     res.send('Logout');
 };
 
-const refreshToken = (req, res) => {
+const refreshToken = async (req, res) => {
+    const { refreshToken } = req.signedCookies;
+    const payload = validateRefreshToken(refreshToken);
+    const userAgent = req.headers['user-agent'];
+    
+    const token = await Token.findOne({ user: payload.user });
+    if (!token) {
+        throw new UnauthenticatedError('Token not found');
+    }
+    if (token.userAgent !== userAgent) {
+        await Token.deleteOne({ _id:token._id });
+        throw new UnauthenticatedError('Different user agent');
+    }
 
+    const tokens = generateTokens({ user: payload.user, role: payload.role });
+    await saveToken(payload.user, tokens.refreshToken, userAgent);
+    
+    const oneDay = 1000 * 60 * 60 * 24;
+    res.cookie('refreshToken', tokens.refreshToken, {
+        expires: new Date(Date.now() + (oneDay * 30)),
+        httpOnly: true,
+        signed: true,
+    });
+    res.json({ accessToken: tokens.accessToken });
 };
 module.exports = {
     register,
     activateUser,
     login,
     logout,
+    refreshToken,
 };
