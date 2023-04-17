@@ -1,11 +1,9 @@
 const nodemailerConfig = require('./nodemailerConfig');
 const sendMail = require('./sendMail');
-const generateTokens = require('./generateTokens');
-const saveToken = require('./saveToken');
+const jwtUtils = require('./jwt');
 
 module.exports = {
     nodemailerConfig,
     sendMail,
-    generateTokens,
-    saveToken,
+    ...jwtUtils,
 };
