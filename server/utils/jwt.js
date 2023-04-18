@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const Token = require('../models/Token');
+const { MONTH } = require('../constants/time');
 const generateTokens = (payload) => {
     const accessToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '10m' });
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: '30d' });
@@ -32,9 +33,8 @@ const generateTokensAndSetRefreshCookie = async (res, payload, userAgent) => {
     const tokens = generateTokens({ user: payload.user, role: payload.role });
     await saveToken(payload.user, tokens.refreshToken, userAgent);
 
-    const oneDay = 1000 * 60 * 60 * 24;
     res.cookie('refreshToken', tokens.refreshToken, {
-        expires: new Date(Date.now() + (oneDay * 30)),
+        expires: new Date(Date.now() + MONTH),
         httpOnly: true,
         signed: true,
     });
