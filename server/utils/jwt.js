@@ -28,8 +28,23 @@ const validateRefreshToken = (refreshToken) => {
     return jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 };
 
+const generateTokensAndSetRefreshCookie = async (res, payload, userAgent) => {
+    const tokens = generateTokens({ user: payload.user, role: payload.role });
+    await saveToken(payload.user, tokens.refreshToken, userAgent);
+
+    const oneDay = 1000 * 60 * 60 * 24;
+    res.cookie('refreshToken', tokens.refreshToken, {
+        expires: new Date(Date.now() + (oneDay * 30)),
+        httpOnly: true,
+        signed: true,
+    });
+
+    return tokens;
+};
+
 module.exports = {
     saveToken,
+    generateTokensAndSetRefreshCookie,
     generateTokens,
     validateRefreshToken,
     validateAccessToken,

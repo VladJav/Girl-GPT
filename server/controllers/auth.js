@@ -3,8 +3,8 @@ const { StatusCodes } = require('http-status-codes');
 const User = require('../models/User');
 const Token = require('../models/Token');
 const { BadRequestError, UnauthenticatedError } = require('../errors');
-const { sendMail, generateTokens, saveToken } = require('../utils');
-const { validateRefreshToken } = require('../utils/jwt');
+const { sendMail } = require('../utils');
+const { validateRefreshToken, generateTokensAndSetRefreshCookie } = require('../utils/jwt');
 
 const register = async (req, res) => {
     const { email, name, password } = req.body;
@@ -44,6 +44,8 @@ const activateUser = async (req, res) => {
 };
 const login = async (req, res) => {
     const { email, password } = req.body;
+    const userAgent = req.headers['user-agent'];
+
     if (!email || !password) {
         throw new BadRequestError('Please provide email and password');
     }
@@ -62,14 +64,7 @@ const login = async (req, res) => {
     if (user.isActivated === false) {
         throw new UnauthenticatedError('Please verify your email');
     }
-    const { refreshToken, accessToken } = generateTokens({ user: user._id, role: user.role });
-    await saveToken(user._id, refreshToken, req.headers['user-agent']);
-    const oneDay = 1000 * 60 * 60 * 24;
-    res.cookie('refreshToken', refreshToken, {
-        expires: new Date(Date.now() + (oneDay * 30)),
-        httpOnly: true,
-        signed: true,
-    });
+    const { accessToken } = await generateTokensAndSetRefreshCookie(res, { user: user._id, role: user.role }, userAgent);
     res.json({ accessToken });
 };
 
@@ -103,16 +98,9 @@ const refreshToken = async (req, res) => {
         throw new UnauthenticatedError('Different user agent');
     }
 
-    const tokens = generateTokens({ user: payload.user, role: payload.role });
-    await saveToken(payload.user, tokens.refreshToken, userAgent);
-    
-    const oneDay = 1000 * 60 * 60 * 24;
-    res.cookie('refreshToken', tokens.refreshToken, {
-        expires: new Date(Date.now() + (oneDay * 30)),
-        httpOnly: true,
-        signed: true,
-    });
-    res.json({ accessToken: tokens.accessToken });
+    const { accessToken } = await generateTokensAndSetRefreshCookie(res, payload, userAgent);
+
+    res.json({ accessToken });
 };
 module.exports = {
     register,
