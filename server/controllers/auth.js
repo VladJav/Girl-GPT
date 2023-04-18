@@ -5,6 +5,8 @@ const Token = require('../models/Token');
 const { BadRequestError, UnauthenticatedError, NotFountError } = require('../errors');
 const { sendMail, validateRefreshToken, generateTokensAndSetRefreshCookie } = require('../utils');
 
+
+// TODO: When front-end will be ready, change CLIENT_URL and create a new HTML message in the email
 const register = async (req, res) => {
     const { email, name, password } = req.body;
     
@@ -102,6 +104,7 @@ const refreshToken = async (req, res) => {
     res.json({ accessToken });
 };
 
+// TODO: When front-end will be ready, change CLIENT_URL and create a new HTML message in the email
 const forgotPassword = async (req, res) => {
     const { email } = req.body;
     
@@ -122,6 +125,10 @@ const forgotPassword = async (req, res) => {
     res.status(StatusCodes.ACCEPTED).json({ msg: 'Success! Check your email to verify account' });
 };
 
+// TODO: When front-end will be ready, finalize this function
+const resetPassword = async (req, res) => {
+    res.send('Reset password');
+};
 module.exports = {
     register,
     activateUser,
@@ -129,4 +136,5 @@ module.exports = {
     logout,
     refreshToken,
     forgotPassword,
+    resetPassword,
 };

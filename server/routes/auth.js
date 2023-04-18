@@ -1,6 +1,6 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
-const { register, logout, login, activateUser, refreshToken, forgotPassword } = require('../controllers/auth');
+const { register, logout, login, activateUser, refreshToken, forgotPassword, resetPassword } = require('../controllers/auth');
 const { authenticateUser } = require('../middleware/authentication');
 const { DAY } = require('../constants/time');
 
@@ -19,5 +19,6 @@ router.post('/login', login);
 router.post('/refresh-token', refreshToken);
 router.delete('/logout', authenticateUser, logout);
 router.post('/forgot-password', resetLimiter, forgotPassword);
+router.put('/reset-password/:token', resetPassword);
 
 module.exports = router;
