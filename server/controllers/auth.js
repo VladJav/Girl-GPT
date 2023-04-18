@@ -2,9 +2,8 @@ const jwt = require('jsonwebtoken');
 const { StatusCodes } = require('http-status-codes');
 const User = require('../models/User');
 const Token = require('../models/Token');
-const { BadRequestError, UnauthenticatedError } = require('../errors');
-const { sendMail } = require('../utils');
-const { validateRefreshToken, generateTokensAndSetRefreshCookie } = require('../utils/jwt');
+const { BadRequestError, UnauthenticatedError, NotFountError } = require('../errors');
+const { sendMail, validateRefreshToken, generateTokensAndSetRefreshCookie } = require('../utils');
 
 const register = async (req, res) => {
     const { email, name, password } = req.body;
@@ -23,7 +22,7 @@ const register = async (req, res) => {
                 <p>${CLIENT_URL}/api/v1/auth/activate/${activationCode}</p>
                 <p><b>NOTE: </b> The above activation link expires in 30 minutes.</p>
                 `);
-    res.json({ msg: 'Success! Check your email to verify account' });
+    res.status(StatusCodes.ACCEPTED).json({ msg: 'Success! Check your email to verify account' });
 };
 const activateUser = async (req, res) => {
     const { token } = req.params;
@@ -102,10 +101,32 @@ const refreshToken = async (req, res) => {
 
     res.json({ accessToken });
 };
+
+const forgotPassword = async (req, res) => {
+    const { email } = req.body;
+    
+    const user = await User.findOne({ email });
+    if (!user) {
+        throw new NotFountError('User not found');
+    }
+    
+    const resetPasswordToken = await jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '10m' });
+    const CLIENT_URL = 'http://localhost:8000';
+    
+    await sendMail(email, 'Forgot Password: GIRL GPT Auth ✔', `
+                <h2>Please click on below link to reset your password</h2>
+                <p>${CLIENT_URL}/api/v1/auth/reset-password/${resetPasswordToken}</p>
+                <p><b>NOTE: </b> The above activation link expires in 10 minutes.</p>
+                `);
+
+    res.status(StatusCodes.ACCEPTED).json({ msg: 'Success! Check your email to verify account' });
+};
+
 module.exports = {
     register,
     activateUser,
     login,
     logout,
     refreshToken,
+    forgotPassword,
 };
