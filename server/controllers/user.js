@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const { checkPermissions } = require('../utils');
+const { NotFountError } = require('../errors');
 
 const showCurrentUser = async (req, res) => {
     const { userId } = req.user;
@@ -28,8 +30,17 @@ const getAllUsers = async (req, res) => {
     res.json({ users, count: users.length, totalPages, currentPage: +page });
 };
 
-const getSingleUser = (req, res) => {
-
+const getSingleUser = async (req, res) => {
+    const { id } = req.params;
+    
+    const user = await User.findById(id);
+    if (!user) {
+        throw new NotFountError('User not exists');
+    }
+    
+    checkPermissions(req.user, user._id);
+    
+    res.json({ user });
 };
 
 const updateUser = (req, res) => {

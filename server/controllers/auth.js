@@ -9,7 +9,10 @@ const { sendMail, validateRefreshToken, generateTokensAndSetRefreshCookie } = re
 // TODO: When front-end will be ready, change CLIENT_URL and create a new HTML message in the email
 const register = async (req, res) => {
     const { email, name, password } = req.body;
-    
+
+    // First created user is admin
+    const role = await User.countDocuments({}) === 0 ? 'admin' : 'user';
+
     const isEmailAlreadyExists = await User.findOne({ email });
     if (isEmailAlreadyExists) {
         throw new BadRequestError(`User with email: ${email}, already exist`);
@@ -17,7 +20,7 @@ const register = async (req, res) => {
 
     const activationCode = jwt.sign({ email: email }, process.env.JWT_SECRET);
     const CLIENT_URL = 'http://localhost:8000';
-    await User.create({ name, email, password, activationCode });
+    await User.create({ name, email, password, activationCode, role });
 
     await sendMail(email, 'Account Verification: GIRL GPT Auth ✔', `
                 <h2>Please click on below link to activate your account</h2>
