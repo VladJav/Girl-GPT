@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const connectDb = require('./db/connect');
 
 const authRouter = require('./routes/auth');
+const userRouter = require('./routes/userRoute');
 
 const { authenticateUser } = require('./middleware/authentication');
 const errorHandlerMiddleware = require('./middleware/error-handler');
@@ -19,6 +20,8 @@ app.use(cookieParser(process.env.JWT_REFRESH_SECRET));
 app.use(express.json());
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/users', userRouter);
+
 app.get('/', authenticateUser, (req, res) => {
     res.send('Girl GPT');
 });
