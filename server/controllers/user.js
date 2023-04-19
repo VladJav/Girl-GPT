@@ -1,7 +1,11 @@
 const User = require('../models/User');
 
-const showCurrentUser = (req, res) => {
+const showCurrentUser = async (req, res) => {
+    const { userId } = req.user;
 
+    const user = await User.findById(userId).select('-password -isActivated -activationCode -__v');
+
+    res.json({ user });
 };
 
 const getAllUsers = async (req, res) => {
