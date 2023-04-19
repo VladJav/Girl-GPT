@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { UnauthenticatedError } = require('../errors');
+const { UnauthenticatedError, PermissionError } = require('../errors');
 const { validateAccessToken } = require('../utils/jwt');
 
 const authenticateUser = async (req, res, next) => {
@@ -19,4 +19,16 @@ const authenticateUser = async (req, res, next) => {
     next();
 };
 
-module.exports = { authenticateUser };
+const authorizePermissions = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            throw new PermissionError('You do not have enough permission');
+        }
+        next();
+    };
+};
+
+module.exports = {
+    authenticateUser,
+    authorizePermissions,
+};
