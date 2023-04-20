@@ -1,6 +1,6 @@
 const express = require('express');
 const rateLimit = require('express-rate-limit');
-const { register, logout, login, activateUser, refreshToken, forgotPassword, resetPassword } = require('../controllers/auth');
+const { register, logout, login, activateUser, refreshToken, forgotPassword, resetPassword } = require('../controllers/authController');
 const { authenticateUser } = require('../middleware/authentication');
 const { DAY } = require('../constants/time');
 

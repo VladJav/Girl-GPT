@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const UserController = require('../models/User');
 const { checkPermissions } = require('../utils');
 const { NotFountError, BadRequestError } = require('../errors');
 const { StatusCodes } = require('http-status-codes');
@@ -6,7 +6,7 @@ const { StatusCodes } = require('http-status-codes');
 const showCurrentUser = async (req, res) => {
     const { userId } = req.user;
 
-    const user = await User.findById(userId).select('-password -isActivated -activationCode -__v');
+    const user = await UserController.findById(userId).select('-password -isActivated -activationCode -__v');
 
     res.json({ user });
 };
@@ -24,9 +24,9 @@ const getAllUsers = async (req, res) => {
     const sortQuery = sort.split(',').join(' ');
     const skip = limit * (page - 1);
 
-    const users = await User.find(queryObject).limit(limit).skip(skip).sort(sortQuery);
+    const users = await UserController.find(queryObject).limit(limit).skip(skip).sort(sortQuery);
 
-    const totalPages = Math.ceil(await User.countDocuments(queryObject) / limit);
+    const totalPages = Math.ceil(await UserController.countDocuments(queryObject) / limit);
 
     res.json({ users, count: users.length, totalPages, currentPage: +page });
 };
@@ -34,9 +34,9 @@ const getAllUsers = async (req, res) => {
 const getSingleUser = async (req, res) => {
     const { id } = req.params;
     
-    const user = await User.findById(id);
+    const user = await UserController.findById(id);
     if (!user) {
-        throw new NotFountError('User not exists');
+        throw new NotFountError('UserController not exists');
     }
     
     checkPermissions(req.user, user._id);
@@ -54,7 +54,7 @@ const updateUser = async (req, res) => {
     
     checkPermissions(req.user, id);
 
-    const user = await User.findByIdAndUpdate(id, { name }, { new: true, runValidators: true });
+    const user = await UserController.findByIdAndUpdate(id, { name }, { new: true, runValidators: true });
 
     res.json({ user });
 };
@@ -64,13 +64,14 @@ const deleteUser = async (req, res) => {
 
     checkPermissions(req.user, id);
 
-    const user = await User.findByIdAndDelete(id);
-    if(!user){
-        throw new NotFountError('User not exists');
+    const user = await UserController.findByIdAndDelete(id);
+    if (!user) {
+        throw new NotFountError('UserController not exists');
     }
 
     res.sendStatus(StatusCodes.NO_CONTENT);
-}
+};
+
 module.exports = {
     showCurrentUser,
     getAllUsers,
