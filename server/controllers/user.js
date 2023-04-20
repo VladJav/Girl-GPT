@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const { checkPermissions } = require('../utils');
 const { NotFountError, BadRequestError } = require('../errors');
+const { StatusCodes } = require('http-status-codes');
 
 const showCurrentUser = async (req, res) => {
     const { userId } = req.user;
@@ -58,9 +59,22 @@ const updateUser = async (req, res) => {
     res.json({ user });
 };
 
+const deleteUser = async (req, res) => {
+    const { id } = req.params;
+
+    checkPermissions(req.user, id);
+
+    const user = await User.findByIdAndDelete(id);
+    if(!user){
+        throw new NotFountError('User not exists');
+    }
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
+}
 module.exports = {
     showCurrentUser,
     getAllUsers,
     getSingleUser,
     updateUser,
+    deleteUser,
 };
