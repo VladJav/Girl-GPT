@@ -1,6 +1,6 @@
 const User = require('../models/User');
 const { checkPermissions } = require('../utils');
-const { NotFountError } = require('../errors');
+const { NotFountError, BadRequestError } = require('../errors');
 
 const showCurrentUser = async (req, res) => {
     const { userId } = req.user;
@@ -43,8 +43,19 @@ const getSingleUser = async (req, res) => {
     res.json({ user });
 };
 
-const updateUser = (req, res) => {
+const updateUser = async (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    if (!name) {
+        throw new BadRequestError('Please provide name and email');
+    }
     
+    checkPermissions(req.user, id);
+
+    const user = await User.findByIdAndUpdate(id, { name }, { new: true, runValidators: true });
+
+    res.json({ user });
 };
 
 module.exports = {

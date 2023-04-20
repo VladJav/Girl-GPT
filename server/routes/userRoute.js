@@ -7,6 +7,6 @@ const router = express.Router();
 router.get('/', authenticateUser, authorizePermissions('admin'), getAllUsers);
 router.get('/showMe', authenticateUser, showCurrentUser);
 router.get('/:id', getSingleUser);
-router.patch('/:id', updateUser);
+router.patch('/:id', authenticateUser, updateUser);
 
 module.exports = router;
