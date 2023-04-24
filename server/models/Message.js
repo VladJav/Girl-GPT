@@ -22,7 +22,7 @@ const messageSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
-messageSchema.pre('find', function() {
+messageSchema.pre('findOne', function() {
     this.populate('messages');
 });
 
