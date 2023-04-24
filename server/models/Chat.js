@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+require('./Message');
 
 const chatSchema = new mongoose.Schema({
     user: {
@@ -10,15 +11,17 @@ const chatSchema = new mongoose.Schema({
         type: String,
         default: 'gpt-3.5-turbo',
     },
-}, {
-    toJSON: true,
-    toObject: true,
-});
+}, { toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 chatSchema.virtual('messages', {
     ref: 'Message',
     localField: '_id',
     foreignField: 'chat',
 });
+
+chatSchema.pre('findOne', function() {
+    this.populate('messages');
+});
+
 
 module.exports = mongoose.model('Chat', chatSchema);
