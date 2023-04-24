@@ -22,4 +22,8 @@ const messageSchema = new mongoose.Schema({
     },
 }, { timestamps: true });
 
+messageSchema.pre('find', function() {
+    this.populate('messages');
+});
+
 module.exports = mongoose.model('Message', messageSchema);
