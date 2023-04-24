@@ -10,9 +10,15 @@ const messageSchema = new mongoose.Schema({
         enum: ['user', 'assistant', 'system'],
         required: true,
     },
+    chat: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Chat',
+        required: true,
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        required: true,
     },
 }, { timestamps: true });
 
