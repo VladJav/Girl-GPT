@@ -1,5 +1,5 @@
 const Chat = require('../models/Chat');
-const { NotFountError } = require('../errors');
+const { NotFountError, BadRequestError } = require('../errors');
 const { checkPermissions } = require('../utils');
 const { StatusCodes } = require('http-status-codes');
 
@@ -45,8 +45,24 @@ const deleteChat = async (req, res) => {
     res.sendStatus(StatusCodes.NO_CONTENT);
 };
 
-const updateChat = (req, res) => {
-    res.send('Update Chat');
+const updateChat = async (req, res) => {
+    const { id: chatId } = req.params;
+    const { title } = req.body;
+    
+    if (!title) {
+        throw new BadRequestError('Provide new chat title');
+    }
+    
+    const chat = await Chat.findById(chatId);
+    if (!chat) {
+        throw new NotFountError('Chat not found');
+    }
+    checkPermissions(req.user, chat.user);
+    
+    chat.title = title;
+    await chat.save();
+
+    res.json({ chat });
 };
 
 module.exports = {
