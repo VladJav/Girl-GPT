@@ -1,6 +1,7 @@
 const Chat = require('../models/Chat');
 const { NotFountError } = require('../errors');
 const { checkPermissions } = require('../utils');
+const { StatusCodes } = require('http-status-codes');
 
 const getAllChats = async (req, res) => {
     const { userId } = req.user;
@@ -11,7 +12,6 @@ const getAllChats = async (req, res) => {
 };
 
 const getSingleChat = async (req, res) => {
-    const { userId } = req.user;
     const { id: chatId } = req.params;
 
     const chat = await Chat.findById(chatId);
@@ -31,8 +31,18 @@ const createChat = async (req, res) => {
     
     res.json({ chat });
 };
-const deleteChat = (req, res) => {
-    res.send('Delete Chat');
+const deleteChat = async (req, res) => {
+    const { id: chatId } = req.params;
+
+    const chat = await Chat.findById(chatId);
+    if (!chat) {
+        throw new NotFountError('Chat not found');
+    }
+    checkPermissions(req.user, chat.user);
+
+    await chat.deleteOne();
+    
+    res.sendStatus(StatusCodes.NO_CONTENT);
 };
 
 const updateChat = (req, res) => {
