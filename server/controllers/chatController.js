@@ -5,8 +5,11 @@ const { StatusCodes } = require('http-status-codes');
 
 const getAllChats = async (req, res) => {
     const { userId } = req.user;
-    
-    const chats = await Chat.find({ user: userId });
+    const { page = 1, limit = 20 } = req.query;
+
+    const skip = limit * (page - 1);
+
+    const chats = await Chat.find({ user: userId }).limit(limit).skip(skip);
 
     res.json({ chats });
 };
