@@ -17,7 +17,7 @@ const getAllChats = async (req, res) => {
 const getSingleChat = async (req, res) => {
     const { id: chatId } = req.params;
 
-    const chat = await Chat.findById(chatId);
+    const chat = await Chat.findById(chatId).populate('messages');
     if (!chat) {
         throw new NotFountError('Chat not found');
     }

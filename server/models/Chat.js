@@ -23,10 +23,6 @@ chatSchema.virtual('messages', {
     foreignField: 'chat',
 });
 
-chatSchema.pre('findOne', function() {
-    this.populate('messages');
-});
-
 chatSchema.pre('save', async function() {
     this.isCreated = this.isModified('createdAt');
 });
