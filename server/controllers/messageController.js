@@ -32,7 +32,7 @@ const createMessage = async (req, res) => {
 
     const responseMessage = await Message.create({ user: userId, chat: chat._id , ...choices[0].message });
 
-    res.json({ response: choices[0] });
+    res.json({ response: responseMessage });
 };
 
 const getMessage = (req, res) => {
