@@ -12,6 +12,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Copyright } from '../../ui';
 import { useForm } from 'react-hook-form';
+import { useRegisterUserMutation } from '../../api/apiSlice';
 
 const theme = createTheme();
 
@@ -19,7 +20,17 @@ export default function RegistrationPage() {
     const { register, formState: { errors }, handleSubmit } = useForm({
         mode: 'onBlur',
     });
-    const onSubmit = data => console.log(data);
+
+    const [registerUser, {isLoading}] = useRegisterUserMutation();
+    const onSubmit = async data => {
+        const {email, password, firstName: name} = data;
+        try{
+            await registerUser({ email, password, name });
+        }
+        catch (e){
+            console.log(e);
+        }
+    };
 
     return (
         <ThemeProvider theme={theme}>
