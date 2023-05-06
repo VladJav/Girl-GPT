@@ -10,9 +10,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Copyright } from '../../ui';
 import { useForm } from 'react-hook-form';
-import { useRegisterUserMutation } from '../../api/apiSlice';
+import { Copyright } from '../../../ui';
+import { useRegisterUserMutation } from '../api/registerApiSlice';
 
 const theme = createTheme();
 
@@ -21,7 +21,7 @@ export default function RegistrationPage() {
         mode: 'onBlur',
     });
 
-    const [registerUser, {isLoading}] = useRegisterUserMutation();
+    const [registerUser] = useRegisterUserMutation();
     const onSubmit = async data => {
         const {email, password, firstName: name} = data;
         try{
