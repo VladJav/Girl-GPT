@@ -3,13 +3,13 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { RegistrationPage } from './pages/RegistrationPage';
+import { LoginPage } from './pages/LoginPage';
 
 
 function App() {
   return (
     <div className="App">
-        <RegistrationPage></RegistrationPage>
+        <LoginPage/>
     </div>
   );
 }
