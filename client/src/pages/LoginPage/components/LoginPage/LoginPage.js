@@ -14,6 +14,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Copyright } from '../../../../ui';
 import { useForm } from 'react-hook-form';
+import { useLoginUserMutation } from '../../api/loginApiSlice';
+import { Alert } from '@mui/material';
 
 const theme = createTheme();
 
@@ -22,8 +24,17 @@ export default function SignIn() {
         mode: 'onBlur'
     });
 
-    const onSubmit = async data => {
+    const [loginUser, {error}] = useLoginUserMutation();
 
+    const onSubmit = async data => {
+        const { email, password } = data;
+        try{
+            const { data } = await loginUser({email, password});
+            localStorage.setItem('accessToken', data.accessToken);
+        }
+        catch (e){
+            console.log(e);
+        }
     }
 
     return (
@@ -93,6 +104,7 @@ export default function SignIn() {
                         >
                             Sign In
                         </Button>
+                        {error && <Alert severity="error">{error.data.msg}</Alert>}
                         <Grid container>
                             <Grid item xs>
                                 <Link href="#" variant="body2">
