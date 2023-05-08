@@ -6,14 +6,22 @@ import store from './store';
 import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { LoginPage } from './pages/LoginPage';
+import {showMeApiSlice} from './api/showMeApiSlice';
 
 const router = createBrowserRouter([
     {
         path: '/',
         element: <div>Home</div>,
-        loader: () => {
+        loader: async () => {
             const accessToken = localStorage.getItem('accessToken');
+
             if(!accessToken){
+                return redirect('/login');
+            }
+
+            const res = await store.dispatch(showMeApiSlice.endpoints.showMe.initiate({accessToken}));
+
+            if(!res.data){
                 return redirect('/login');
             }
             return null;
