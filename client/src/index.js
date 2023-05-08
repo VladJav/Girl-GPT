@@ -15,15 +15,12 @@ const router = createBrowserRouter([
         loader: async () => {
             const accessToken = localStorage.getItem('accessToken');
 
-            if(!accessToken){
-                return redirect('/login');
-            }
-
             const res = await store.dispatch(showMeApiSlice.endpoints.showMe.initiate({accessToken}));
 
             if(!res.data){
                 return redirect('/login');
             }
+
             return null;
         }
     },
