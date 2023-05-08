@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Token = require('../models/Token');
 const { MONTH } = require('../constants/time');
+const { UnauthenticatedError } = require('../errors');
 const generateTokens = (payload) => {
     const accessToken = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '10m' });
     const refreshToken = jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: '30d' });
@@ -22,7 +23,12 @@ const saveToken = async (userId, refreshToken, userAgent) => {
 };
 
 const validateAccessToken = (accessToken) => {
-    return jwt.verify(accessToken, process.env.JWT_SECRET);
+    try {
+        return jwt.verify(accessToken, process.env.JWT_SECRET);
+    }
+    catch (e) {
+        throw new UnauthenticatedError('Bad Token');
+    }
 };
 
 const validateRefreshToken = (refreshToken) => {
