@@ -1,0 +1,1 @@
+export { default as ForgotPasswordPage } from './components/ForgotPasswordPage/ForgotPasswordPage';

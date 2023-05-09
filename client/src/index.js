@@ -7,6 +7,7 @@ import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom'
 import { RegistrationPage } from './pages/RegistrationPage';
 import { LoginPage } from './pages/LoginPage';
 import {showMeApiSlice} from './api/showMeApiSlice';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 
 const router = createBrowserRouter([
     {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
     {
       path: 'login',
       element: <LoginPage/>
+    },
+    {
+        path: 'forgot-password',
+        element: <ForgotPasswordPage/>
     }
 ])
 

@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -13,28 +11,19 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Copyright } from '../../../../ui';
 import { useForm } from 'react-hook-form';
-import { useLoginUserMutation } from '../../api/loginApiSlice';
-import { Alert } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function ForgotPasswordPage() {
     const {register, formState: { errors }, handleSubmit} = useForm({
         mode: 'onBlur'
     });
 
-    const [loginUser, {error}] = useLoginUserMutation();
-
     const onSubmit = async data => {
-        const { email, password } = data;
-        try{
-            const { data } = await loginUser({email, password});
-            localStorage.setItem('accessToken', data.accessToken);
-        }
-        catch (e){
-            console.log(e);
-        }
+        const { email } = data;
+
+        console.log(email);
     }
 
     return (
@@ -53,7 +42,7 @@ export default function SignIn() {
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
-                        Sign in
+                        Forgot Password
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
                         <TextField
@@ -68,32 +57,14 @@ export default function SignIn() {
                                 required: {
                                     value: true,
                                     message: 'Email is required'
+                                },
+                                pattern: {
+                                    value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                    message: 'Invalid email'
                                 }
                             })}
                             error={errors.email && true}
                             helperText={errors.email?.message}
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            {...register('password', {
-                                required: {
-                                    value: true,
-                                    message: 'Password is required'
-                                }
-                            })}
-                            error={errors.password && true}
-                            helperText={errors.password?.message}
-                        />
-                        <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
                         />
                         <Button
                             type="submit"
@@ -101,13 +72,12 @@ export default function SignIn() {
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign In
+                            Send Email
                         </Button>
-                        {error && <Alert severity="error">{error.data.msg}</Alert>}
                         <Grid container>
                             <Grid item xs>
-                                <Link to="/forgot-password" variant="body2">
-                                    Forgot password?
+                                <Link to="/login" variant="body2">
+                                    Sign In
                                 </Link>
                             </Grid>
                             <Grid item>
