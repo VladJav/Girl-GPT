@@ -4,6 +4,7 @@ const User = require('../models/User');
 const Token = require('../models/Token');
 const { BadRequestError, UnauthenticatedError, NotFountError } = require('../errors');
 const { sendMail, validateRefreshToken, generateTokensAndSetRefreshCookie } = require('../utils');
+const { validateAccessToken } = require('../utils/jwt');
 
 
 // TODO: When front-end will be ready, change CLIENT_URL and create a new HTML message in the email
@@ -19,12 +20,12 @@ const register = async (req, res) => {
     }
 
     const activationCode = jwt.sign({ email: email }, process.env.JWT_SECRET);
-    const CLIENT_URL = 'http://localhost:8000';
+
     await User.create({ name, email, password, activationCode, role });
 
     await sendMail(email, 'Account Verification: GIRL GPT Auth ✔', `
                 <h2>Please click on below link to activate your account</h2>
-                <p>${CLIENT_URL}/api/v1/auth/activate/${activationCode}</p>
+                <p>${process.env.CLIENT_URL}/api/v1/auth/activate/${activationCode}</p>
                 <p><b>NOTE: </b> The above activation link expires in 30 minutes.</p>
                 `);
     res.status(StatusCodes.ACCEPTED).json({ msg: 'Success! Check your email to verify account' });
@@ -116,20 +117,36 @@ const forgotPassword = async (req, res) => {
         throw new NotFountError('User not found');
     }
     
-    const resetPasswordToken = await jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '10m' });
-    const CLIENT_URL = 'http://localhost:8000';
-    
+    const resetPasswordToken = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '10m' });
+    user.resetCode = resetPasswordToken;
+    await user.save();
+
     await sendMail(email, 'Forgot Password: GIRL GPT Auth ✔', `
                 <h2>Please click on below link to reset your password</h2>
-                <p>${CLIENT_URL}/api/v1/auth/reset-password/${resetPasswordToken}</p>
+                <p>${process.env.CLIENT_URL}/reset-password/${resetPasswordToken}</p>
                 <p><b>NOTE: </b> The above activation link expires in 10 minutes.</p>
                 `);
 
-    res.status(StatusCodes.ACCEPTED).json({ msg: 'Success! Check your email to verify account' });
+    res.status(StatusCodes.ACCEPTED).json({ msg: 'Success! Check your email to reset password' });
 };
 
 // TODO: When front-end will be ready, finalize this function
 const resetPassword = async (req, res) => {
+    const { token: resetCode } = req.params;
+    const { newPassword } = req.body;
+
+    const { email } = validateAccessToken(resetCode);
+
+    const user = await User.findOne({ email });
+
+    if (!user || user.resetCode !== resetCode) {
+        throw new UnauthenticatedError('Bad Token');
+    }
+
+    user.password = newPassword;
+    user.resetCode = '';
+    await user.save();
+
     res.send('Reset password');
 };
 module.exports = {

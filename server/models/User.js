@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema({
     activationCode:{
         type: String,
     },
+    resetCode:{
+        type:String,
+    },
     isActivated:{
         type: Boolean,
         default: false,
