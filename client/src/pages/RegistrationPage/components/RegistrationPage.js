@@ -61,7 +61,6 @@ export default function RegistrationPage() {
                                     fullWidth
                                     id="firstName"
                                     label="Username"
-                                    autoFocus
                                     {...register('firstName', {
                                         required: {
                                             value: true,

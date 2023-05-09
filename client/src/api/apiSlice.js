@@ -5,7 +5,6 @@ const baseQuery = fetchBaseQuery({ baseUrl: '/api/v1'})
 const baseQueryWithReauth = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions)
     if (result.error && result.error.status === 401) {
-        // try to get a new token
         const { data } = await baseQuery('/auth/refresh-token', api, extraOptions);
         if (data) {
             localStorage.setItem('accessToken', data.accessToken);
