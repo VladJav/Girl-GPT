@@ -133,17 +133,21 @@ const forgotPassword = async (req, res) => {
 // TODO: When front-end will be ready, finalize this function
 const resetPassword = async (req, res) => {
     const { token: resetCode } = req.params;
-    const { newPassword } = req.body;
+    const { newPassword1, newPassword2 } = req.body;
 
+    if (newPassword1 !== newPassword2) {
+        throw new BadRequestError('Passwords are not the same');
+    }
     const { email } = validateAccessToken(resetCode);
 
     const user = await User.findOne({ email });
+
 
     if (!user || user.resetCode !== resetCode) {
         throw new UnauthenticatedError('Bad Token');
     }
 
-    user.password = newPassword;
+    user.password = newPassword1;
     user.resetCode = '';
     await user.save();
 
