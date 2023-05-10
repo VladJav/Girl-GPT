@@ -12,6 +12,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Copyright } from '../../../../ui';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { useForgotPasswordMutation } from '../../api/forgotPasswordApiSlice';
+import { Alert } from '@mui/material';
 
 const theme = createTheme();
 
@@ -20,10 +22,19 @@ export default function ForgotPasswordPage() {
         mode: 'onBlur'
     });
 
+    const [forgotPassword, {error, isSuccess}] = useForgotPasswordMutation();
+
     const onSubmit = async data => {
         const { email } = data;
 
-        console.log(email);
+        try{
+            const res = await forgotPassword({email});
+            console.log(res.data);
+        }
+        catch (e){
+            console.log(e);
+        }
+
     }
 
     return (
@@ -74,6 +85,8 @@ export default function ForgotPasswordPage() {
                         >
                             Send Email
                         </Button>
+                        {error && <Alert severity="error">{error.data.msg}</Alert>}
+                        {isSuccess && <Alert severity="success">Success! Check your email to reset password</Alert>}
                         <Grid container>
                             <Grid item xs>
                                 <Link to="/login" variant="body2">
