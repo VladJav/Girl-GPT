@@ -1,0 +1,1 @@
+export { default as ActivateAccountPage } from './components/ActivateAcoountPage/ActivateAccountPage';

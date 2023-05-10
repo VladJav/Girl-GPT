@@ -8,6 +8,8 @@ import { RegistrationPage } from './pages/RegistrationPage';
 import { LoginPage } from './pages/LoginPage';
 import {showMeApiSlice} from './api/showMeApiSlice';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
+import { ResetPasswordPage } from './pages/ResetPasswordPage';
+import { ActivateAccountPage } from './pages/ActivateAccountPage';
 
 const router = createBrowserRouter([
     {
@@ -36,6 +38,24 @@ const router = createBrowserRouter([
     {
         path: 'forgot-password',
         element: <ForgotPasswordPage/>
+    },
+    {
+        path: 'reset-password/:token',
+        element: <ResetPasswordPage/>,
+        loader: ({ params })=>{
+            const { token } = params;
+
+            return { token };
+        }
+    },
+    {
+        path:'activate-account/:token',
+        element: <ActivateAccountPage/>,
+        loader: ({ params })=>{
+            const { token } = params;
+
+            return { token };
+        }
     }
 ])
 
