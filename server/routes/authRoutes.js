@@ -14,7 +14,7 @@ const resetLimiter = rateLimit({
 });
 
 router.post('/register', register);
-router.get('/activate/:token', activateUser);
+router.patch('/activate/:token', activateUser);
 router.post('/login', login);
 router.get('/refresh-token', refreshToken);
 router.delete('/logout', authenticateUser, logout);

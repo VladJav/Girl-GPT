@@ -25,7 +25,7 @@ const register = async (req, res) => {
 
     await sendMail(email, 'Account Verification: GIRL GPT Auth ✔', `
                 <h2>Please click on below link to activate your account</h2>
-                <p>${process.env.CLIENT_URL}/api/v1/auth/activate/${activationCode}</p>
+                <p>${process.env.CLIENT_URL}/activate-account/${activationCode}</p>
                 <p><b>NOTE: </b> The above activation link expires in 30 minutes.</p>
                 `);
     res.status(StatusCodes.ACCEPTED).json({ msg: 'Success! Check your email to verify account' });
@@ -33,7 +33,7 @@ const register = async (req, res) => {
 const activateUser = async (req, res) => {
     const { token } = req.params;
 
-    const { email } = jwt.verify(token, process.env.JWT_SECRET);
+    const { email } = validateAccessToken(token);
     
     const user = await User.findOne({ email });
     
@@ -144,14 +144,14 @@ const resetPassword = async (req, res) => {
 
 
     if (!user || user.resetCode !== resetCode) {
-        throw new UnauthenticatedError('Bad Token');
+        throw new UnauthenticatedError('Bad Reset Token');
     }
 
     user.password = newPassword1;
     user.resetCode = '';
     await user.save();
 
-    res.send('Reset password');
+    res.sendStatus(StatusCodes.OK);
 };
 module.exports = {
     register,
