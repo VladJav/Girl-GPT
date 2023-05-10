@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { Copyright } from '../../../ui';
 import { useRegisterUserMutation } from '../api/registerApiSlice';
 import { Link } from 'react-router-dom';
+import { Alert } from '@mui/material';
 
 const theme = createTheme();
 
@@ -21,7 +22,7 @@ export default function RegistrationPage() {
         mode: 'onBlur',
     });
 
-    const [registerUser] = useRegisterUserMutation();
+    const [registerUser, {error, isSuccess}] = useRegisterUserMutation();
     const onSubmit = async data => {
         const {email, password, firstName: name} = data;
         try{
@@ -137,6 +138,8 @@ export default function RegistrationPage() {
                         >
                             Sign Up
                         </Button>
+                        {error && <Alert severity="error">{error.data.msg}</Alert>}
+                        {isSuccess && <Alert severity="success">Success! Check your email to activate password</Alert>}
                         <Grid container justifyContent="flex-end">
                             <Grid item>
                                 <Link to="/login" variant="body2">
