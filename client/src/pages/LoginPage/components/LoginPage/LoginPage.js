@@ -15,7 +15,7 @@ import { Copyright } from '../../../../ui';
 import { useForm } from 'react-hook-form';
 import { useLoginUserMutation } from '../../api/loginApiSlice';
 import { Alert } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
 
@@ -25,12 +25,14 @@ export default function SignIn() {
     });
 
     const [loginUser, {error}] = useLoginUserMutation();
+    const navigate = useNavigate();
 
     const onSubmit = async data => {
         const { email, password } = data;
         try{
             const { data } = await loginUser({email, password});
             localStorage.setItem('accessToken', data.accessToken);
+            navigate('/');
         }
         catch (e){
             console.log(e);
