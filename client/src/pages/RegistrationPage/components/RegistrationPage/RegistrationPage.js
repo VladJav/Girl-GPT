@@ -10,8 +10,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useForm } from 'react-hook-form';
-import { Copyright } from '../../../ui';
-import { useRegisterUserMutation } from '../api/registerApiSlice';
+import { Copyright } from '../../../../ui';
+import { useRegisterUserMutation } from '../../api/registerApiSlice';
 import { Link } from 'react-router-dom';
 import { Alert } from '@mui/material';
 
