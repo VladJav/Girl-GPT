@@ -28,8 +28,7 @@ export default function ForgotPasswordPage() {
         const { email } = data;
 
         try{
-            const res = await forgotPassword({email});
-            console.log(res.data);
+            await forgotPassword({email});
         }
         catch (e){
             console.log(e);

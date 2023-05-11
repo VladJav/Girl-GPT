@@ -22,7 +22,6 @@ export default function ActivateAccountPage() {
     const onSubmit = async (e) => {
         try{
             e.preventDefault();
-            console.log(token);
             await activateAccount({activateToken: token});
         }
         catch (e) {

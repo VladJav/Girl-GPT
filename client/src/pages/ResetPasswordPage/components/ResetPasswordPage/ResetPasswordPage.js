@@ -28,8 +28,7 @@ export default function ResetPasswordPage() {
         const { password1, password2 } = data;
 
         try{
-            const res =await resetPassword({resetToken: token, newPassword1: password1, newPassword2: password2});
-            console.log(res);
+            await resetPassword({resetToken: token, newPassword1: password1, newPassword2: password2});
         }
         catch (e) {
             console.log(e);
