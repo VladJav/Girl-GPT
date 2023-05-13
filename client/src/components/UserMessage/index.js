@@ -1,0 +1,1 @@
+export { default as UserMessage } from './components/UserMessage/UserMessage';
