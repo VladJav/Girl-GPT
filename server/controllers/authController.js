@@ -124,7 +124,7 @@ const forgotPassword = async (req, res) => {
     await sendMail(email, 'Forgot Password: GIRL GPT Auth ✔', `
                 <h2>Please click on below link to reset your password</h2>
                 <p>${process.env.CLIENT_URL}/reset-password/${resetPasswordToken}</p>
-                <p><b>NOTE: </b> The above activation link expires in 10 minutes.</p>
+                <p><b>NOTE: </b> The above activaton link expires in 10 minutes.</p>
                 `);
 
     res.status(StatusCodes.ACCEPTED).json({ msg: 'Success! Check your email to reset password' });
