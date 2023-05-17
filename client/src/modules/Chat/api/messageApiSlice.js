@@ -14,6 +14,7 @@ export const messageApiSlice = apiSlice.injectEndpoints({
                     content,
                 },
             }),
+            invalidatesTags: ['Message'],
         }),
     }),
 })

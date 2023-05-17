@@ -6,7 +6,7 @@ import { useCreateMessageMutation } from '../../api/messageApiSlice';
 
 export default function Chat(){
     const accessToken = localStorage.getItem('accessToken');
-    const chatId = '644983f312f9c7fe6b5bf5cb';
+    const chatId = '64651edf84fd13bc0a87e27a';
 
     const { data, isSuccess } = useGetSingleChatQuery({
         accessToken,
@@ -18,11 +18,8 @@ export default function Chat(){
     const onSubmit = async (e) => {
         if(e.key === 'Enter'){
             const content = e.target.value;
-            console.log(accessToken);
-            console.log(chatId);
-            console.log(content);
             const res = await createMessage({accessToken, chatId, content });
-            console.log(res);
+            e.target.value = '';
         }
     }
     return (

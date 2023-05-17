@@ -9,6 +9,7 @@ export const chatApiSlice = apiSlice.injectEndpoints({
                     Authorization: `Bearer ${accessToken}`
                 },
             }),
+            providesTags: ['Message'],
         }),
     }),
 });
