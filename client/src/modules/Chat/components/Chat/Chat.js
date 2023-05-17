@@ -2,20 +2,34 @@ import Grid from '@mui/material/Grid';
 import { useGetSingleChatQuery } from '../../api/chatApiSlice';
 import { TextField } from '@mui/material';
 import MessagesList from '../MessagesList/MessagesList';
+import { useCreateMessageMutation } from '../../api/messageApiSlice';
 
 export default function Chat(){
     const accessToken = localStorage.getItem('accessToken');
+    const chatId = '644983f312f9c7fe6b5bf5cb';
 
     const { data, isSuccess } = useGetSingleChatQuery({
         accessToken,
-        chatId: '644983f312f9c7fe6b5bf5cb',
+        chatId
     });
 
+    const [ createMessage ] = useCreateMessageMutation();
+
+    const onSubmit = async (e) => {
+        if(e.key === 'Enter'){
+            const content = e.target.value;
+            console.log(accessToken);
+            console.log(chatId);
+            console.log(content);
+            const res = await createMessage({accessToken, chatId, content });
+            console.log(res);
+        }
+    }
     return (
-        <Grid container justifyContent={'center'}>
+        <Grid container justifyContent={'center'} height={'100vh'}>
             {isSuccess && <MessagesList messages={data.chat.messages}/>}
-            <Grid sx={{position: 'sticky', bottom:0}} item xs={12} md={7}>
-                <TextField fullWidth variant="filled" sx={{backgroundColor: '#dedede', borderRadius: '5px'}} placeholder={'Send a message.'}/>
+            <Grid item xs={12} md={6}>
+                <TextField onKeyDown={onSubmit} variant="filled" sx={{ width: '50%' , backgroundColor: '#dedede', borderRadius: '5px', position: 'fixed', bottom: 0}} placeholder={'Send a message.'}/>
             </Grid>
         </Grid>
     )
