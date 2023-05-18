@@ -11,11 +11,12 @@ import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { resetPasswordLoader, ResetPasswordPage } from './pages/ResetPasswordPage';
 import { activateAccountLoader, ActivateAccountPage } from './pages/ActivateAccountPage';
 import { Chat } from './modules/Chat';
+import { ChatList } from './modules/ChatList';
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Chat/>,
+        element: <ChatList/>,
         loader: async () => {
             const accessToken = localStorage.getItem('accessToken');
 
