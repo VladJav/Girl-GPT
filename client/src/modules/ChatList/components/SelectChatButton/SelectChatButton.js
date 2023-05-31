@@ -8,6 +8,15 @@ const buttonStyles = {
 }
 export default function SelectChatButton({ chat, onClick, selectedChatId }){
 
+
+    const onEdit = () => {
+
+    };
+
+    const onDelete = () => {
+
+    };
+
     return (
         <Grid xs={12} item>
             <Button onClick={()=> {onClick(chat._id)}} sx={buttonStyles} variant="text">
