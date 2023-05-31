@@ -1,6 +1,8 @@
 import { Button, Grid, IconButton, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { useDeleteChatMutation } from '../../api/deleteChatApiSlice';
+import { useState } from 'react';
 
 const buttonStyles = {
     width: '100%',
@@ -8,13 +10,17 @@ const buttonStyles = {
 }
 export default function SelectChatButton({ chat, onClick, selectedChatId }){
 
+    const accessToken = localStorage.getItem('accessToken');
+    const [ deleteChat ] = useDeleteChatMutation();
+    const [isEditing, setIsEditing] = useState(false);
+
 
     const onEdit = () => {
-
+        setIsEditing(!isEditing);
     };
 
-    const onDelete = () => {
-
+    const onDelete = async () => {
+        await deleteChat({accessToken, id: chat._id});
     };
 
     return (
@@ -26,13 +32,13 @@ export default function SelectChatButton({ chat, onClick, selectedChatId }){
                     </Grid>
                     <Grid container xs={3} md={4}>
                         <Grid item xs={6}>
-                            <IconButton size="small" onMouseDown={(e)=>{
+                            <IconButton onClick={onEdit} size="small" onMouseDown={(e)=>{
                                 e.stopPropagation();}}>
                                 {selectedChatId===chat._id && <EditIcon/>}
                             </IconButton>
                         </Grid>
                         <Grid item xs={6}>
-                            <IconButton size="small" onMouseDown={(e)=>{
+                            <IconButton onClick={onDelete} size="small" onMouseDown={(e)=>{
                                 e.stopPropagation();}}>
                                 {selectedChatId===chat._id && <DeleteIcon/>}
                             </IconButton>
