@@ -3,6 +3,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDeleteChatMutation } from '../../api/deleteChatApiSlice';
 import { useState } from 'react';
+import EditingChatButton from '../EditingChatButton/EditingChatButton';
+import { useUpdateChatMutation } from '../../api/updateChatApiSlice';
 
 const buttonStyles = {
     width: '100%',
@@ -12,11 +14,14 @@ export default function SelectChatButton({ chat, onClick, selectedChatId }){
 
     const accessToken = localStorage.getItem('accessToken');
     const [ deleteChat ] = useDeleteChatMutation();
+    const [ updateChat ] = useUpdateChatMutation();
     const [isEditing, setIsEditing] = useState(false);
+    const [newTitle, setNewTitle] = useState(chat.title)
 
 
-    const onEdit = () => {
-        setIsEditing(!isEditing);
+    const onEdit = async () => {
+        setIsEditing(false);
+        await updateChat({title: newTitle, id: chat._id, accessToken});
     };
 
     const onDelete = async () => {
@@ -25,14 +30,14 @@ export default function SelectChatButton({ chat, onClick, selectedChatId }){
 
     return (
         <Grid xs={12} item>
-            <Button onClick={()=> {onClick(chat._id)}} sx={buttonStyles} variant="text">
+            {isEditing ? <EditingChatButton title={newTitle} setTitle={setNewTitle} onSubmit={onEdit}/> : <Button onClick={()=> {onClick(chat._id)}} sx={buttonStyles} variant="text">
                 <Grid container xs={12}>
                     <Grid item xs={9} md={8}>
                         <Typography sx={{ overflow: 'hidden', textAlign: 'left'}}>{chat.title}</Typography>
                     </Grid>
                     <Grid container xs={3} md={4}>
                         <Grid item xs={6}>
-                            <IconButton onClick={onEdit} size="small" onMouseDown={(e)=>{
+                            <IconButton onClick={()=>{setIsEditing(!isEditing);}} size="small" onMouseDown={(e)=>{
                                 e.stopPropagation();}}>
                                 {selectedChatId===chat._id && <EditIcon/>}
                             </IconButton>
@@ -45,7 +50,7 @@ export default function SelectChatButton({ chat, onClick, selectedChatId }){
                         </Grid>
                     </Grid>
                 </Grid>
-            </Button>
+            </Button>}
         </Grid>
     )
 }
