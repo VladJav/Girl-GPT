@@ -1,5 +1,5 @@
 import Grid from '@mui/material/Grid';
-import { useGetSingleChatQuery } from '../../api/chatApiSlice';
+import { useCreateChatMutation, useGetSingleChatQuery } from '../../api/chatApiSlice';
 import { TextField, Typography } from '@mui/material';
 import MessagesList from '../MessagesList/MessagesList';
 import { useCreateMessageMutation } from '../../api/messageApiSlice';
@@ -15,12 +15,16 @@ export default function Chat(){
     });
 
     const [ createMessage ] = useCreateMessageMutation();
+    const [ createChat ] = useCreateChatMutation();
 
     const onSubmit = async (e) => {
         if(e.key === 'Enter'){
             const content = e.target.value;
-            await createMessage({accessToken, chatId, content });
             e.target.value = '';
+            if(!chatId){
+                await createChat({accessToken});
+            }
+            await createMessage({accessToken, chatId, content });
         }
     };
 

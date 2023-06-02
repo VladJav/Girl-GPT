@@ -11,7 +11,17 @@ export const chatApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ['Message', 'Chat'],
         }),
+        createChat: build.mutation({
+            query: ( { accessToken } ) => ({
+                url: '/chat',
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${accessToken}`
+                },
+            }),
+            invalidatesTags: ['Chat'],
+        }),
     }),
 });
 
-export const { useGetSingleChatQuery } = chatApiSlice;
+export const { useGetSingleChatQuery, useCreateChatMutation } = chatApiSlice;
