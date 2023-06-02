@@ -10,13 +10,12 @@ import {showMeApiSlice} from './api/showMeApiSlice';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { resetPasswordLoader, ResetPasswordPage } from './pages/ResetPasswordPage';
 import { activateAccountLoader, ActivateAccountPage } from './pages/ActivateAccountPage';
-import { Chat } from './modules/Chat';
-import { ChatList } from './modules/ChatList';
+import MainPage from './pages/MainPage/components/MainPage/MainPage';
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <ChatList/>,
+        element: <MainPage/>,
         loader: async () => {
             const accessToken = localStorage.getItem('accessToken');
 
