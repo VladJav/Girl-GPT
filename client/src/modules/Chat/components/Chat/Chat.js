@@ -3,10 +3,11 @@ import { useGetSingleChatQuery } from '../../api/chatApiSlice';
 import { TextField, Typography } from '@mui/material';
 import MessagesList from '../MessagesList/MessagesList';
 import { useCreateMessageMutation } from '../../api/messageApiSlice';
+import { useSelector } from 'react-redux';
 
 export default function Chat(){
     const accessToken = localStorage.getItem('accessToken');
-    const chatId = '2';
+    const { id: chatId } = useSelector(state => state.currentChat);
 
     const { data, isSuccess } = useGetSingleChatQuery({
         accessToken,
