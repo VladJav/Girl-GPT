@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from './api/apiSlice';
-import { currentChatReducer } from './modules/ChatList';
+import { currentChatReducer } from './pages/MainPage';
 
 const store = configureStore({
     reducer: {

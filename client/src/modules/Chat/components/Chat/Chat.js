@@ -5,7 +5,7 @@ import MessagesList from '../MessagesList/MessagesList';
 import { useCreateMessageMutation } from '../../api/messageApiSlice';
 import { useSelector } from 'react-redux';
 
-export default function Chat(){
+export default function Chat({ changeCurrentChat }){
     const accessToken = localStorage.getItem('accessToken');
     const { id: chatId } = useSelector(state => state.currentChat);
 
@@ -22,9 +22,13 @@ export default function Chat(){
             const content = e.target.value;
             e.target.value = '';
             if(!chatId){
-                await createChat({accessToken});
+                const { data: { chat } } = await createChat({accessToken});
+                changeCurrentChat(chat._id);
+                await createMessage({accessToken, chatId: chat._id, content });
             }
-            await createMessage({accessToken, chatId, content });
+            else{
+                await createMessage({accessToken, chatId, content });
+            }
         }
     };
 
