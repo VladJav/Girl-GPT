@@ -7,10 +7,10 @@ export default function MessagesList({ messages }) {
         <Grid container sx={{ marginBottom:'5%' }}>
             {messages.map(e => {
                 if (e.role === 'user') {
-                    return <UserMessage author={'as'} message={e.content}/>;
+                    return <UserMessage key={e._id} author={'as'} message={e.content}/>;
                 }
                 if (e.role === 'assistant') {
-                    return <BotMessage message={e.content}/>;
+                    return <BotMessage key={e._id} message={e.content}/>;
                 }
             })}
         </Grid>

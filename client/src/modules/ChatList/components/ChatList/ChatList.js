@@ -16,13 +16,13 @@ export default function ChatList({ changeCurrentChat }) {
     const onClickCreate = async () => {
         changeCurrentChat(null);
     };
-    
+
     return (
         <Grid container direction={'column'} sx={{ backgroundColor: '#f0f0f0', height: '100vh' }}>
             <Grid container sx={{ overflowX: 'hidden', overflowY: 'scroll' }}>
                 <Button onClick={onClickCreate} fullWidth sx={{ color: '#414141', borderColor: 'secondary.main', border: 2 }}><AddIcon/>New Chat</Button>
                 {isSuccess && data.chats.map(e => {
-                    return <SelectChatButton chat={e} onClick={onChatSelect} selectedChatId={currentChat}/>;
+                    return <SelectChatButton chat={e} onClick={onChatSelect} selectedChatId={currentChat} key={e._id}/>;
                 })}
             </Grid>
         </Grid>

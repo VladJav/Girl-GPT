@@ -6,11 +6,11 @@ export const showMeApiSlice = apiSlice.injectEndpoints({
             query: ({ accessToken }) => ({
                 url: '/users/showMe',
                 headers: {
-                    Authorization: `Bearer ${accessToken}`
-                }
+                    Authorization: `Bearer ${accessToken}`,
+                },
             }),
-        })
-    })
+        }),
+    }),
 });
 
 export const { useShowMeQuery } = showMeApiSlice;

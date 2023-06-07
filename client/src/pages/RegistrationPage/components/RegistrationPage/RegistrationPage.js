@@ -22,13 +22,13 @@ export default function RegistrationPage() {
         mode: 'onBlur',
     });
 
-    const [registerUser, {error, isSuccess}] = useRegisterUserMutation();
+    const [registerUser, { error, isSuccess }] = useRegisterUserMutation();
     const onSubmit = async data => {
-        const {email, password, firstName: name} = data;
-        try{
+        const { email, password, firstName: name } = data;
+        try {
             await registerUser({ email, password, name });
         }
-        catch (e){
+        catch (e) {
             console.log(e);
         }
     };
@@ -65,16 +65,16 @@ export default function RegistrationPage() {
                                     {...register('firstName', {
                                         required: {
                                             value: true,
-                                            message: 'First name is required'
+                                            message: 'First name is required',
                                         },
                                         minLength: {
                                             value: 3,
-                                            message: 'First name is too short'
+                                            message: 'First name is too short',
                                         },
                                         maxLength: {
                                             value: 32,
-                                            message: 'First name is too long'
-                                        }
+                                            message: 'First name is too long',
+                                        },
                                     })}
                                     error={errors.firstName && true}
                                     helperText={errors.firstName?.message}
@@ -91,12 +91,13 @@ export default function RegistrationPage() {
                                     {...register('email',  {
                                         required: {
                                             value: true,
-                                            message: 'Email is required'
+                                            message: 'Email is required',
                                         },
                                         pattern: {
+                                            // eslint-disable-next-line
                                             value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                            message: 'Invalid email'
-                                        }
+                                            message: 'Invalid email',
+                                        },
                                     }) }
                                     error={errors.email && true}
                                     helperText={errors.email?.message}
@@ -114,16 +115,16 @@ export default function RegistrationPage() {
                                     {...register('password', {
                                         required: {
                                             value: true,
-                                            message: 'Password is required'
+                                            message: 'Password is required',
                                         },
                                         minLength: {
                                             value: 6,
-                                            message: 'Password is too short'
+                                            message: 'Password is too short',
                                         },
                                         maxLength: {
                                             value: 32,
-                                            message: 'Password is too long'
-                                        }
+                                            message: 'Password is too long',
+                                        },
                                     })}
                                     error={errors.password && true}
                                     helperText={errors.password?.message}
