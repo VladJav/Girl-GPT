@@ -5,10 +5,10 @@ import { currentChatReducer } from './pages/MainPage';
 const store = configureStore({
     reducer: {
         currentChat: currentChatReducer,
-        [apiSlice.reducerPath]: apiSlice.reducer
+        [apiSlice.reducerPath]: apiSlice.reducer,
     },
     middleware: getDefaultMiddleware =>
-        getDefaultMiddleware().concat(apiSlice.middleware)
+        getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
 export default store;

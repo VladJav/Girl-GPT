@@ -20,24 +20,24 @@ import { Link, useNavigate } from 'react-router-dom';
 const theme = createTheme();
 
 export default function SignIn() {
-    const {register, formState: { errors }, handleSubmit} = useForm({
-        mode: 'onBlur'
+    const { register, formState: { errors }, handleSubmit } = useForm({
+        mode: 'onBlur',
     });
 
-    const [loginUser, {error}] = useLoginUserMutation();
+    const [loginUser, { error }] = useLoginUserMutation();
     const navigate = useNavigate();
 
     const onSubmit = async data => {
         const { email, password } = data;
-        try{
-            const { data } = await loginUser({email, password});
+        try {
+            const { data } = await loginUser({ email, password });
             localStorage.setItem('accessToken', data.accessToken);
             navigate('/');
         }
-        catch (e){
+        catch (e) {
             console.log(e);
         }
-    }
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -69,8 +69,8 @@ export default function SignIn() {
                             {...register('email', {
                                 required: {
                                     value: true,
-                                    message: 'Email is required'
-                                }
+                                    message: 'Email is required',
+                                },
                             })}
                             error={errors.email && true}
                             helperText={errors.email?.message}
@@ -87,8 +87,8 @@ export default function SignIn() {
                             {...register('password', {
                                 required: {
                                     value: true,
-                                    message: 'Password is required'
-                                }
+                                    message: 'Password is required',
+                                },
                             })}
                             error={errors.password && true}
                             helperText={errors.password?.message}
@@ -114,7 +114,7 @@ export default function SignIn() {
                             </Grid>
                             <Grid item>
                                 <Link to="/register" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                    {'Don\'t have an account? Sign Up'}
                                 </Link>
                             </Grid>
                         </Grid>

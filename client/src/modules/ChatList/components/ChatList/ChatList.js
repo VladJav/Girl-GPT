@@ -4,7 +4,7 @@ import SelectChatButton from '../SelectChatButton/SelectChatButton';
 import { useSelector } from 'react-redux';
 import AddIcon from '@mui/icons-material/Add';
 
-export default function ChatList({changeCurrentChat}){
+export default function ChatList({ changeCurrentChat }) {
     const accessToken = localStorage.getItem('accessToken');
 
     const { id: currentChat } = useSelector(state => state.currentChat);
@@ -18,14 +18,14 @@ export default function ChatList({changeCurrentChat}){
     };
     
     return (
-        <Grid container direction={'column'} sx={{backgroundColor: '#f0f0f0', height: '100vh'}}>
-            <Grid container sx={{overflowX: 'hidden', overflowY: 'scroll'}}>
-                <Button onClick={onClickCreate} fullWidth sx={{color: '#414141', borderColor: 'secondary.main', border: 2}}><AddIcon/>New Chat</Button>
-                {isSuccess && data.chats.map(e=>{
-                    return <SelectChatButton chat={e} onClick={onChatSelect} selectedChatId={currentChat}/>
-                    })}
+        <Grid container direction={'column'} sx={{ backgroundColor: '#f0f0f0', height: '100vh' }}>
+            <Grid container sx={{ overflowX: 'hidden', overflowY: 'scroll' }}>
+                <Button onClick={onClickCreate} fullWidth sx={{ color: '#414141', borderColor: 'secondary.main', border: 2 }}><AddIcon/>New Chat</Button>
+                {isSuccess && data.chats.map(e => {
+                    return <SelectChatButton chat={e} onClick={onChatSelect} selectedChatId={currentChat}/>;
+                })}
             </Grid>
         </Grid>
-    )
+    );
 
 }

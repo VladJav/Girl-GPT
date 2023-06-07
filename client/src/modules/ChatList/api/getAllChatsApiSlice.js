@@ -1,15 +1,15 @@
-import { apiSlice} from '../../../api/apiSlice';
+import { apiSlice } from '../../../api/apiSlice';
 
 export const getAllChatsApiSlice = apiSlice.injectEndpoints({
     endpoints: build => ({
         getAllChats: build.query({
-            query: ( { accessToken } ) => ({
+            query: ({ accessToken }) => ({
                 url: '/chat',
                 headers: {
-                    Authorization: `Bearer ${accessToken}`
+                    Authorization: `Bearer ${accessToken}`,
                 },
             }),
-            providesTags: ['Chat']
+            providesTags: ['Chat'],
         }),
     }),
 });

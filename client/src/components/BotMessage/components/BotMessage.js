@@ -4,9 +4,9 @@ import Typography from '@mui/material/Typography';
 
 const messageContainerStyle = {
     backgroundColor: '#f0f0f0',
-    padding: '30px 0'
-}
-export default function BotMessage({ message }){
+    padding: '30px 0',
+};
+export default function BotMessage({ message }) {
     return (
         <Grid container sx={messageContainerStyle} justifyContent="center" xs={12}>
             <Grid container md={6} xs={12}>
@@ -18,5 +18,5 @@ export default function BotMessage({ message }){
                 </Grid>
             </Grid>
         </Grid>
-    )
+    );
 }

@@ -8,10 +8,10 @@ const currentChatSlice = createSlice({
     name: 'currentChat',
     initialState,
     reducers: {
-        changeChat(state, action){
+        changeChat(state, action) {
             state.id = action.payload.id;
         },
-    }
+    },
 });
 
 export const { changeChat } = currentChatSlice.actions;

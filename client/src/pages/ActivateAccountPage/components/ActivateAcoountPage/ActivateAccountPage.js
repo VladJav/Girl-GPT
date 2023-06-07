@@ -16,18 +16,18 @@ const theme = createTheme();
 
 export default function ActivateAccountPage() {
 
-    const [activateAccount, {error, isSuccess}] = useActivateAccountMutation();
+    const [activateAccount, { error, isSuccess }] = useActivateAccountMutation();
     const { token } = useLoaderData();
 
     const onSubmit = async (e) => {
-        try{
+        try {
             e.preventDefault();
-            await activateAccount({activateToken: token});
+            await activateAccount({ activateToken: token });
         }
         catch (e) {
             console.log(e);
         }
-    }
+    };
 
     return (
         <ThemeProvider theme={theme}>

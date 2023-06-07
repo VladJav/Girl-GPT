@@ -3,9 +3,9 @@ import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
 const messageContainerStyle = {
-    padding: '30px 0'
-}
-export default function BotMessage({ message, author }){
+    padding: '30px 0',
+};
+export default function BotMessage({ message, author }) {
     return (
         <Grid container sx={messageContainerStyle} justifyContent="center" xs={12}>
             <Grid container md={6} xs={12}>
@@ -17,5 +17,5 @@ export default function BotMessage({ message, author }){
                 </Grid>
             </Grid>
         </Grid>
-    )
+    );
 }

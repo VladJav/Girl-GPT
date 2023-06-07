@@ -17,8 +17,8 @@ import { Alert } from '@mui/material';
 const theme = createTheme();
 
 export default function ResetPasswordPage() {
-    const {register, formState: { errors }, handleSubmit} = useForm({
-        mode: 'onBlur'
+    const { register, formState: { errors }, handleSubmit } = useForm({
+        mode: 'onBlur',
     });
 
     const [resetPassword, { error, isSuccess }] = useResetPasswordMutation();
@@ -27,13 +27,13 @@ export default function ResetPasswordPage() {
     const onSubmit = async data => {
         const { password1, password2 } = data;
 
-        try{
-            await resetPassword({resetToken: token, newPassword1: password1, newPassword2: password2});
+        try {
+            await resetPassword({ resetToken: token, newPassword1: password1, newPassword2: password2 });
         }
         catch (e) {
             console.log(e);
         }
-    }
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -66,16 +66,16 @@ export default function ResetPasswordPage() {
                             {...register('password1', {
                                 required: {
                                     value: true,
-                                    message: 'Password is required'
+                                    message: 'Password is required',
                                 },
                                 minLength: {
                                     value: 6,
-                                    message: 'Password is too short'
+                                    message: 'Password is too short',
                                 },
                                 maxLength: {
                                     value: 32,
-                                    message: 'Password is too long'
-                                }
+                                    message: 'Password is too long',
+                                },
                             })}
                             error={errors.password1 && true}
                             helperText={errors.password1?.message}
@@ -92,16 +92,16 @@ export default function ResetPasswordPage() {
                             {...register('password2', {
                                 required: {
                                     value: true,
-                                    message: 'Password is required'
+                                    message: 'Password is required',
                                 },
                                 minLength: {
                                     value: 6,
-                                    message: 'Password is too short'
+                                    message: 'Password is too short',
                                 },
                                 maxLength: {
                                     value: 32,
-                                    message: 'Password is too long'
-                                }
+                                    message: 'Password is too long',
+                                },
                             })}
                             error={errors.password2 && true}
                             helperText={errors.password2?.message}

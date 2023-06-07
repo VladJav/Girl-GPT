@@ -1,4 +1,4 @@
-import { apiSlice} from '../../../api/apiSlice';
+import { apiSlice } from '../../../api/apiSlice';
 
 export const messageApiSlice = apiSlice.injectEndpoints({
     endpoints: build => ({
@@ -7,7 +7,7 @@ export const messageApiSlice = apiSlice.injectEndpoints({
                 url: '/message',
                 method: 'POST',
                 headers: {
-                    Authorization: `Bearer ${accessToken}`
+                    Authorization: `Bearer ${accessToken}`,
                 },
                 body: {
                     chat: chatId,
@@ -17,6 +17,6 @@ export const messageApiSlice = apiSlice.injectEndpoints({
             invalidatesTags: ['Message'],
         }),
     }),
-})
+});
 
 export const { useCreateMessageMutation } = messageApiSlice;

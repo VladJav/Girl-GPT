@@ -6,10 +6,10 @@ export const registerApiSlice = apiSlice.injectEndpoints({
             query: body => ({
                 url: '/auth/register',
                 method: 'POST',
-                body: body
-            })
-        })
-    })
-})
+                body: body,
+            }),
+        }),
+    }),
+});
 
 export const { useRegisterUserMutation } = registerApiSlice;

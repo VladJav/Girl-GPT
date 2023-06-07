@@ -6,10 +6,10 @@ export const forgotPasswordApiSlice = apiSlice.injectEndpoints({
             query: body => ({
                 url: '/auth/forgot-password',
                 method: 'POST',
-                body
-            })
-        })
-    })
+                body,
+            }),
+        }),
+    }),
 });
 
 export const { useForgotPasswordMutation } = forgotPasswordApiSlice;

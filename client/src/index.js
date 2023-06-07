@@ -6,7 +6,7 @@ import store from './store';
 import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { LoginPage } from './pages/LoginPage';
-import {showMeApiSlice} from './api/showMeApiSlice';
+import { showMeApiSlice } from './api/showMeApiSlice';
 import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { resetPasswordLoader, ResetPasswordPage } from './pages/ResetPasswordPage';
 import { activateAccountLoader, ActivateAccountPage } from './pages/ActivateAccountPage';
@@ -19,26 +19,26 @@ const router = createBrowserRouter([
         loader: async () => {
             const accessToken = localStorage.getItem('accessToken');
 
-            const res = await store.dispatch(showMeApiSlice.endpoints.showMe.initiate({accessToken}));
+            const res = await store.dispatch(showMeApiSlice.endpoints.showMe.initiate({ accessToken }));
 
-            if(!res.data){
+            if (!res.data) {
                 return redirect('/login');
             }
 
             return null;
-        }
+        },
     },
     {
         path: 'register',
-        element: <RegistrationPage/>
+        element: <RegistrationPage/>,
     },
     {
         path: 'login',
-        element: <LoginPage/>
+        element: <LoginPage/>,
     },
     {
         path: 'forgot-password',
-        element: <ForgotPasswordPage/>
+        element: <ForgotPasswordPage/>,
     },
     {
         path: 'reset-password/:token',
@@ -49,16 +49,15 @@ const router = createBrowserRouter([
         path:'activate-account/:token',
         element: <ActivateAccountPage/>,
         loader: activateAccountLoader,
-    }
-])
+    },
+]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-        <RouterProvider router={router} />
-    </Provider>
-  </React.StrictMode>
+    <React.StrictMode>
+        <Provider store={store}>
+            <RouterProvider router={router} />
+        </Provider>
+    </React.StrictMode>,
 );
-
 

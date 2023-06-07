@@ -1,17 +1,17 @@
-import { apiSlice} from '../../../api/apiSlice';
+import { apiSlice } from '../../../api/apiSlice';
 
 export const updateChatApiSlice = apiSlice.injectEndpoints({
     endpoints: build => ({
         updateChat: build.mutation({
-            query: ({id, title, accessToken}) => ({
+            query: ({ id, title, accessToken }) => ({
                 url: `/chat/${id}`,
                 method: 'PATCH',
                 headers: {
-                    Authorization: `Bearer ${accessToken}`
+                    Authorization: `Bearer ${accessToken}`,
                 },
                 body: {
-                    title
-                }
+                    title,
+                },
             }),
             invalidatesTags: ['Chat'],
         }),

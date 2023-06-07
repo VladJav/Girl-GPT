@@ -1,4 +1,4 @@
-import { apiSlice} from '../../../api/apiSlice';
+import { apiSlice } from '../../../api/apiSlice';
 
 export const deleteChatApiSlice = apiSlice.injectEndpoints({
     endpoints: build => ({
@@ -7,7 +7,7 @@ export const deleteChatApiSlice = apiSlice.injectEndpoints({
                 url: `/chat/${id}`,
                 method: 'DELETE',
                 headers: {
-                    Authorization: `Bearer ${accessToken}`
+                    Authorization: `Bearer ${accessToken}`,
                 },
             }),
             invalidatesTags: ['Chat'],

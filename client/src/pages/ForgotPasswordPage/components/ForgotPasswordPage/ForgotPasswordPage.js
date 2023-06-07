@@ -18,23 +18,23 @@ import { Alert } from '@mui/material';
 const theme = createTheme();
 
 export default function ForgotPasswordPage() {
-    const {register, formState: { errors }, handleSubmit} = useForm({
-        mode: 'onBlur'
+    const { register, formState: { errors }, handleSubmit } = useForm({
+        mode: 'onBlur',
     });
 
-    const [forgotPassword, {error, isSuccess}] = useForgotPasswordMutation();
+    const [forgotPassword, { error, isSuccess }] = useForgotPasswordMutation();
 
     const onSubmit = async data => {
         const { email } = data;
 
-        try{
-            await forgotPassword({email});
+        try {
+            await forgotPassword({ email });
         }
-        catch (e){
+        catch (e) {
             console.log(e);
         }
 
-    }
+    };
 
     return (
         <ThemeProvider theme={theme}>
@@ -66,12 +66,13 @@ export default function ForgotPasswordPage() {
                             {...register('email', {
                                 required: {
                                     value: true,
-                                    message: 'Email is required'
+                                    message: 'Email is required',
                                 },
                                 pattern: {
+                                    // eslint-disable-next-line
                                     value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                                    message: 'Invalid email'
-                                }
+                                    message: 'Invalid email',
+                                },
                             })}
                             error={errors.email && true}
                             helperText={errors.email?.message}
@@ -94,7 +95,7 @@ export default function ForgotPasswordPage() {
                             </Grid>
                             <Grid item>
                                 <Link to="/register" variant="body2">
-                                    {"Don't have an account? Sign Up"}
+                                    {'Don\'t have an account? Sign Up'}
                                 </Link>
                             </Grid>
                         </Grid>

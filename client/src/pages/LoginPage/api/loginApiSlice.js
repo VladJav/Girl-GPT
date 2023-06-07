@@ -6,10 +6,10 @@ export const loginApiSlice = apiSlice.injectEndpoints({
             query: body => ({
                 url: '/auth/login',
                 method: 'POST',
-                body
-            })
-        })
-    })
+                body,
+            }),
+        }),
+    }),
 });
 
 export const { useLoginUserMutation } = loginApiSlice;
