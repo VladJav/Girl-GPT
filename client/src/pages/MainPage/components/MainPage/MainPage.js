@@ -1,4 +1,4 @@
-import { Drawer, Grid, IconButton } from '@mui/material';
+import { AppBar, Drawer, Grid, IconButton } from '@mui/material';
 import { ChatList } from '../../../../modules/ChatList';
 import { Chat } from '../../../../modules/Chat';
 import { useDispatch } from 'react-redux';
@@ -21,19 +21,23 @@ export default function MainPage() {
 
     return (
         <Grid container>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                onClick={() => {setIsHamburgerOpen(true);}}
-                sx={{
-                    mr: 2,
-                    display: {
-                        xs: 'block',
-                        sm: 'none',
-                    },
-                }}>
-                <MenuIcon />
-            </IconButton>
+            <AppBar position="sticky" color="inherit">
+                <Grid item>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={() => {setIsHamburgerOpen(true);}}
+                        sx={{
+                            mr: 2,
+                            display: {
+                                xs: 'block',
+                                sm: 'none',
+                            },
+                        }}>
+                        <MenuIcon />
+                    </IconButton>
+                </Grid>
+            </AppBar>
             <Drawer
                 anchor="left"
                 open={isHamburgerOpen}
@@ -48,7 +52,7 @@ export default function MainPage() {
                     </Grid>
                 </Grid>
             </Drawer>
-            <Grid item md={2} sm={4} sx={{ display: { xs: 'none', sm: 'flex' } }} >
+            <Grid item md={2} sm={4} sx={{ display: { xs: 'none', sm: 'flex' } }  } >
                 <ChatList changeCurrentChat={changeCurrentChat}></ChatList>
             </Grid>
             <Grid item md={10} xs={12} sm={8}>

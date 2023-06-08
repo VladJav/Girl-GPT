@@ -19,7 +19,7 @@ export default function ChatList({ changeCurrentChat }) {
     };
 
     return (
-        <Grid container direction={'column'} sx={{ backgroundColor: '#f0f0f0', height: '100vh' }}>
+        <Grid container direction={'column'} sx={{ backgroundColor: '#f0f0f0', minHeight: '100vh', maxHeight:'100%' }}>
             <Grid container sx={{ overflowX: 'hidden', overflowY: 'scroll' }}>
                 <Button onClick={onClickCreate} fullWidth sx={{ color: '#414141', borderColor: 'secondary.main', border: 2 }}><AddIcon/>New Chat</Button>
                 {isSuccess && data.chats.map(e => {

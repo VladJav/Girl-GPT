@@ -33,7 +33,7 @@ export default function Chat({ changeCurrentChat }) {
     };
 
     return (
-        <Grid sx={{ backgroundColor: '#f5f5f5' }} container justifyContent={'center'} height={'100vh'}>
+        <Grid sx={{ backgroundColor: '#f5f5f5', minHeight: '100vh', maxHeight:'100%' }} container justifyContent={'center'}>
             {isSuccess ? <MessagesList messages={data.chat.messages}/> : <Grid container justifyContent={'center'} alignItems={'center'} >
                 <Typography  sx={{ fontWeight: 'bold' }} variant={'h3'}>
                     Girl GPT
