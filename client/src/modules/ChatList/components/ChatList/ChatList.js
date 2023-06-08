@@ -9,6 +9,7 @@ export default function ChatList({ changeCurrentChat }) {
 
     const { id: currentChat } = useSelector(state => state.currentChat);
     const { data, isSuccess } = useGetAllChatsQuery({ accessToken });
+
     const onChatSelect = (clickedId) => {
         changeCurrentChat(clickedId);
     };

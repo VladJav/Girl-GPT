@@ -40,7 +40,11 @@ export default function Chat({ changeCurrentChat }) {
                 </Typography>
             </Grid>}
             <Grid item xs={12} md={6}>
-                <TextField onKeyDown={onSubmit} variant="filled" sx={{ width: '50%' , backgroundColor: '#dedede', borderRadius: '5px', position: 'fixed', bottom: 0 }} placeholder={'Send a message.'}/>
+                <TextField
+                    onKeyDown={onSubmit}
+                    variant="filled"
+                    sx={{ width: { xs: '100%', md: '50%' } , backgroundColor: '#dedede', borderRadius: '5px', position: 'fixed', bottom: 0 }}
+                    placeholder={'Send a message.'}/>
             </Grid>
         </Grid>
     );
