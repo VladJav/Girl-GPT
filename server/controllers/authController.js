@@ -7,7 +7,6 @@ const { sendMail, validateRefreshToken, generateTokensAndSetRefreshCookie } = re
 const { validateAccessToken } = require('../utils/jwt');
 
 
-// TODO: When front-end will be ready, change CLIENT_URL and create a new HTML message in the email
 const register = async (req, res) => {
     const { email, name, password } = req.body;
 
@@ -108,7 +107,6 @@ const refreshToken = async (req, res) => {
     res.json({ accessToken });
 };
 
-// TODO: When front-end will be ready, change CLIENT_URL and create a new HTML message in the email
 const forgotPassword = async (req, res) => {
     const { email } = req.body;
     
@@ -130,7 +128,6 @@ const forgotPassword = async (req, res) => {
     res.status(StatusCodes.ACCEPTED).json({ msg: 'Success! Check your email to reset password' });
 };
 
-// TODO: When front-end will be ready, finalize this function
 const resetPassword = async (req, res) => {
     const { token: resetCode } = req.params;
     const { newPassword1, newPassword2 } = req.body;
@@ -151,7 +148,7 @@ const resetPassword = async (req, res) => {
     user.resetCode = '';
     await user.save();
 
-    res.sendStatus(StatusCodes.OK);
+    res.status(StatusCodes.OK).json({ msg: 'Success!' });
 };
 module.exports = {
     register,
