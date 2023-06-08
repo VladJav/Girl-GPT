@@ -30,7 +30,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:8000",
+  "proxy": "https://seahorse-app-5765m.ondigitalocean.app",
   "eslintConfig": {
     "extends": [
       "react-app",
