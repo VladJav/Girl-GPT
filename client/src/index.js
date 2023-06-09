@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import { Provider } from 'react-redux';
 import store from './store';
-import { createBrowserRouter, redirect, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, createHashRouter, redirect, RouterProvider } from 'react-router-dom';
 import { RegistrationPage } from './pages/RegistrationPage';
 import { LoginPage } from './pages/LoginPage';
 import { showMeApiSlice } from './api/showMeApiSlice';
@@ -12,7 +12,7 @@ import { resetPasswordLoader, ResetPasswordPage } from './pages/ResetPasswordPag
 import { activateAccountLoader, ActivateAccountPage } from './pages/ActivateAccountPage';
 import MainPage from './pages/MainPage/components/MainPage/MainPage';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
     {
         path: '/',
         element: <MainPage/>,
