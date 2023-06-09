@@ -31,6 +31,7 @@ export default function ResetPasswordPage() {
             await resetPassword({ resetToken: token, newPassword1: password1, newPassword2: password2 });
         }
         catch (e) {
+            // eslint-disable-next-line
             console.log(e);
         }
     };

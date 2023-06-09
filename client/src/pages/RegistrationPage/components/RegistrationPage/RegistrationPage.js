@@ -29,6 +29,7 @@ export default function RegistrationPage() {
             await registerUser({ email, password, name });
         }
         catch (e) {
+            // eslint-disable-next-line
             console.log(e);
         }
     };

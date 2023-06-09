@@ -35,6 +35,7 @@ export default function SignIn() {
             navigate('/');
         }
         catch (e) {
+            // eslint-disable-next-line
             console.log(e);
         }
     };
