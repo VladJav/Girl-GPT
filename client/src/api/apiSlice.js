@@ -1,6 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseQuery = fetchBaseQuery({ baseUrl: '/api/v1' });
+// eslint-disable-next-line no-undef
+const rootUrl = process.env.NODE_ENV === 'production' ? 'https://seahorse-app-5765m.ondigitalocean.app' : '';
+
+const baseQuery = fetchBaseQuery({ baseUrl: `${rootUrl}/api/v1` });
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions);
