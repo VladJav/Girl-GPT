@@ -22,7 +22,7 @@ const PORT = process.env.PORT || 8000;
 
 
 app.use(morgan('tiny'));
-app.use(cors());
+app.use(cors({ origin: 'https://frabjous-biscochitos-52f526.netlify.app' }));
 app.use(cookieParser(process.env.JWT_REFRESH_SECRET));
 app.use(express.json());
 app.use(express.static('public'));
