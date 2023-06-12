@@ -22,7 +22,6 @@ const PORT = process.env.PORT || 8000;
 
 const corsOptions = {
     origin: 'https://frabjous-biscochitos-52f526.netlify.app',
-    preflightContinue: true,
     credentials: true,
 };
 
