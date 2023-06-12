@@ -20,9 +20,13 @@ const notFoundMiddleware = require('./middleware/not-found');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+const corsOptions = {
+    origin: 'https://frabjous-biscochitos-52f526.netlify.app',
+    credentials: true,
+};
 
 app.use(morgan('tiny'));
-app.use(cors({ origin: 'https://frabjous-biscochitos-52f526.netlify.app' }));
+app.use(cors(corsOptions));
 app.use(cookieParser(process.env.JWT_REFRESH_SECRET));
 app.use(express.json());
 app.use(express.static('public'));
