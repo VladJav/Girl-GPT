@@ -26,6 +26,9 @@ export const apiSlice = createApi({
     reducerPath: 'api',
     tagTypes: ['Message', 'Chat'],
     baseQuery: baseQueryWithReauth,
+    prepareHeaders: (headers) => {
+        return headers;
+    },
     endpoints: () => ({}),
 });
 
