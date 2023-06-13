@@ -1,5 +1,7 @@
 # Girl-GPT
 
+GirlGPT is a web application for chatting with an AI girl. I made it for fun and to gain knowledge.
+
 ## Installation
 
 Clone the project and open root directory
@@ -29,3 +31,7 @@ npm start
 cd ../client
 npm start
 ```
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
